@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 // Liste complète des légendes Brawlhalla
 export const brawlhallaLegends = [
   { name: 'Bodvar', image: '/legends/bodvar.png' },
@@ -163,6 +165,38 @@ export function LegendBadge({ legend, size = 'md', onClick }: LegendBadgeProps) 
       }`}
     >
       <span className="font-bold text-white">{legend.charAt(0)}</span>
+    </div>
+  );
+}
+
+// Carousel component for legends
+export function LegendCarousel() {
+  // Double the legends for seamless infinite scroll
+  const doubledLegends = [...brawlhallaLegends, ...brawlhallaLegends];
+
+  return (
+    <div className="relative overflow-hidden py-4">
+      <div className="flex animate-scroll gap-8">
+        {doubledLegends.map((legend, index) => (
+          <div
+            key={`${legend.name}-${index}`}
+            className="flex-shrink-0 group cursor-pointer"
+          >
+            <div className="relative w-20 h-24 transition-transform duration-300 group-hover:scale-110">
+              <Image
+                src={legend.image}
+                alt={legend.name}
+                fill
+                className="object-contain drop-shadow-[0_0_10px_rgba(139,92,246,0.3)] group-hover:drop-shadow-[0_0_20px_rgba(139,92,246,0.6)]"
+                unoptimized
+              />
+            </div>
+            <p className="text-center text-xs text-gray-400 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              {legend.name}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

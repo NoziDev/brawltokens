@@ -391,6 +391,15 @@ body {
   animation: scroll-left 40s linear infinite;
 }
 
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll {
+  animation: scroll 60s linear infinite;
+}
+
 /* VS pulse */
 @keyframes vs-pulse {
   0%, 100% {
