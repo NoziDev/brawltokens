@@ -59,12 +59,9 @@ export default function Header() {
           {/* Actions */}
           <div className="flex items-center gap-3">
             {loading ? (
-              <Link
-                href="/login"
-                className="px-4 py-2 bg-[#8b5cf6] text-white rounded-xl text-sm font-semibold hover:bg-[#7c3aed] transition-colors"
-              >
-                Login
-              </Link>
+              <div className="px-4 py-2 bg-[#1a1a2e] rounded-xl">
+                <div className="w-20 h-4 bg-[#2a2a3e] rounded animate-pulse"></div>
+              </div>
             ) : user && profile ? (
               <>
                 {/* Token Balance */}
