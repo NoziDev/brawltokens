@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -10,34 +11,31 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { signIn } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    try {
-      const { error } = await signIn(email, password);
+    const result = await signIn(email, password);
 
-      if (error) {
-        // Traduire les erreurs courantes
-        if (error.includes('Invalid login credentials')) {
-          setError('Invalid email or password');
-        } else if (error.includes('Email not confirmed')) {
-          setError('Please confirm your email before signing in. Check your inbox!');
-        } else if (error.includes('Too many requests')) {
-          setError('Too many attempts. Please wait a moment and try again.');
-        } else {
-          setError(error);
-        }
-        setIsLoading(false);
+    if (result.error) {
+      // Traduire les erreurs courantes
+      if (result.error.includes('Invalid login credentials')) {
+        setError('Invalid email or password');
+      } else if (result.error.includes('Email not confirmed')) {
+        setError('Please confirm your email before signing in. Check your inbox!');
+      } else if (result.error.includes('Too many requests')) {
+        setError('Too many attempts. Please wait a moment and try again.');
       } else {
-        // Connexion réussie - redirection
-        window.location.href = '/';
+        setError(result.error);
       }
-    } catch {
-      setError('Connection error. Please try again.');
       setIsLoading(false);
+    } else {
+      // Connexion réussie - redirection
+      router.push('/');
+      router.refresh();
     }
   };
 

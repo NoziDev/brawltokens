@@ -87,24 +87,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Vérifier si l'utilisateur a un profil, sinon le créer
       if (data.user) {
-        const { data: existingProfile } = await supabase
-          .from('users')
-          .select('id')
-          .eq('id', data.user.id)
-          .single()
+        try {
+          const { data: existingProfile } = await supabase
+            .from('users')
+            .select('id')
+            .eq('id', data.user.id)
+            .maybeSingle()
 
-        if (!existingProfile) {
-          // Créer le profil manquant
-          await supabase.from('users').insert({
-            id: data.user.id,
-            email: data.user.email!,
-            username: data.user.email!.split('@')[0],
-            tokens: 50,
-            elo: 1500,
-            wins: 0,
-            losses: 0,
-            is_admin: false
-          })
+          if (!existingProfile) {
+            // Créer le profil manquant
+            await supabase.from('users').insert({
+              id: data.user.id,
+              email: data.user.email!,
+              username: data.user.email!.split('@')[0],
+              tokens: 50,
+              elo: 1500,
+              wins: 0,
+              losses: 0,
+              is_admin: false
+            })
+          }
+        } catch (profileErr) {
+          console.error('Profile check error:', profileErr)
+          // Continue anyway - auth succeeded
         }
       }
 
