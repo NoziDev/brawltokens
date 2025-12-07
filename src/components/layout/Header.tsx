@@ -83,7 +83,7 @@ export default function Header() {
               <>
                 <Link
                   href="/login"
-                  className="hidden sm:flex items-center gap-2 text-muted hover:text-white transition-colors text-sm font-medium"
+                  className="px-4 py-2 text-white hover:text-[#8b5cf6] transition-colors text-sm font-medium border border-[#2a2a3e] rounded-xl hover:border-[#8b5cf6]"
                 >
                   Login
                 </Link>
