@@ -18,13 +18,22 @@ export default function Login() {
     setIsLoading(true);
     setError('');
 
-    const { error } = await signIn(email, password);
+    try {
+      const { error } = await signIn(email, password);
 
-    if (error) {
-      setError(error);
+      if (error) {
+        setError(error);
+        setIsLoading(false);
+      } else {
+        // Small delay to let auth state update before redirect
+        setTimeout(() => {
+          router.push('/');
+          router.refresh();
+        }, 100);
+      }
+    } catch {
+      setError('Connection error. Please try again.');
       setIsLoading(false);
-    } else {
-      router.push('/');
     }
   };
 

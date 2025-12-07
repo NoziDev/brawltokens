@@ -37,13 +37,22 @@ export default function Register() {
 
     setIsLoading(true);
 
-    const { error } = await signUp(email, password, username);
+    try {
+      const { error } = await signUp(email, password, username);
 
-    if (error) {
-      setError(error);
+      if (error) {
+        setError(error);
+        setIsLoading(false);
+      } else {
+        // Small delay to let auth state update before redirect
+        setTimeout(() => {
+          router.push('/');
+          router.refresh();
+        }, 100);
+      }
+    } catch {
+      setError('Connection error. Please try again.');
       setIsLoading(false);
-    } else {
-      router.push('/');
     }
   };
 
