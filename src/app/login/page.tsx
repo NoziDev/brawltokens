@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Login() {
@@ -10,7 +9,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
   const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,20 +16,25 @@ export default function Login() {
     setIsLoading(true);
     setError('');
 
+    // Timeout de sécurité - 10 secondes max
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+      setError('Connection timeout. Please try again.');
+    }, 10000);
+
     try {
       const { error } = await signIn(email, password);
+      clearTimeout(timeout);
 
       if (error) {
         setError(error);
         setIsLoading(false);
       } else {
-        // Small delay to let auth state update before redirect
-        setTimeout(() => {
-          router.push('/');
-          router.refresh();
-        }, 100);
+        // Connexion réussie - redirection
+        window.location.href = '/';
       }
     } catch {
+      clearTimeout(timeout);
       setError('Connection error. Please try again.');
       setIsLoading(false);
     }

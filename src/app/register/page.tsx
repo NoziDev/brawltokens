@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Register() {
@@ -13,7 +12,6 @@ export default function Register() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
   const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,20 +35,25 @@ export default function Register() {
 
     setIsLoading(true);
 
+    // Timeout de sécurité - 15 secondes max (register prend plus de temps)
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+      setError('Connection timeout. Please try again.');
+    }, 15000);
+
     try {
       const { error } = await signUp(email, password, username);
+      clearTimeout(timeout);
 
       if (error) {
         setError(error);
         setIsLoading(false);
       } else {
-        // Small delay to let auth state update before redirect
-        setTimeout(() => {
-          router.push('/');
-          router.refresh();
-        }, 100);
+        // Inscription réussie - redirection
+        window.location.href = '/';
       }
     } catch {
+      clearTimeout(timeout);
       setError('Connection error. Please try again.');
       setIsLoading(false);
     }
