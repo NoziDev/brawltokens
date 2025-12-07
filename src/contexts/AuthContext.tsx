@@ -78,8 +78,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return { error: error?.message ?? null }
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+      if (error) {
+        return { error: error.message }
+      }
+
+      // Vérifier si l'utilisateur a un profil, sinon le créer
+      if (data.user) {
+        const { data: existingProfile } = await supabase
+          .from('users')
+          .select('id')
+          .eq('id', data.user.id)
+          .single()
+
+        if (!existingProfile) {
+          // Créer le profil manquant
+          await supabase.from('users').insert({
+            id: data.user.id,
+            email: data.user.email!,
+            username: data.user.email!.split('@')[0],
+            tokens: 50,
+            elo: 1500,
+            wins: 0,
+            losses: 0,
+            is_admin: false
+          })
+        }
+      }
+
+      return { error: null }
+    } catch (err) {
+      console.error('Sign in error:', err)
+      return { error: 'Connection error. Please try again.' }
+    }
   }
 
   const signUp = async (email: string, password: string, username: string) => {

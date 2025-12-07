@@ -16,25 +16,24 @@ export default function Login() {
     setIsLoading(true);
     setError('');
 
-    // Timeout de sécurité - 10 secondes max
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-      setError('Connection timeout. Please try again.');
-    }, 10000);
-
     try {
       const { error } = await signIn(email, password);
-      clearTimeout(timeout);
 
       if (error) {
-        setError(error);
+        // Traduire les erreurs courantes
+        if (error.includes('Invalid login credentials')) {
+          setError('Invalid email or password');
+        } else if (error.includes('Email not confirmed')) {
+          setError('Please confirm your email before signing in');
+        } else {
+          setError(error);
+        }
         setIsLoading(false);
       } else {
         // Connexion réussie - redirection
         window.location.href = '/';
       }
     } catch {
-      clearTimeout(timeout);
       setError('Connection error. Please try again.');
       setIsLoading(false);
     }
