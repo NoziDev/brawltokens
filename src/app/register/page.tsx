@@ -12,6 +12,7 @@ export default function Register() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,29 +36,77 @@ export default function Register() {
 
     setIsLoading(true);
 
-    // Timeout de sécurité - 15 secondes max (register prend plus de temps)
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-      setError('Connection timeout. Please try again.');
-    }, 15000);
-
     try {
       const { error } = await signUp(email, password, username);
-      clearTimeout(timeout);
 
       if (error) {
         setError(error);
         setIsLoading(false);
       } else {
-        // Inscription réussie - redirection
-        window.location.href = '/';
+        // Inscription réussie - afficher message de confirmation
+        setSuccess(true);
+        setIsLoading(false);
       }
     } catch {
-      clearTimeout(timeout);
       setError('Connection error. Please try again.');
       setIsLoading(false);
     }
   };
+
+  // Afficher le message de succès
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center py-12 px-4">
+        <div className="absolute inset-0 bg-[#0a0a0f]"></div>
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#22c55e] rounded-full filter blur-[150px]"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-[#16a34a] rounded-full filter blur-[150px]"></div>
+        </div>
+
+        <div className="relative z-10 w-full max-w-md">
+          <Link href="/" className="flex items-center justify-center gap-2 mb-8">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#f6a21a] to-[#ffd700] rounded-lg flex items-center justify-center">
+              <span className="text-black font-bold text-2xl">B</span>
+            </div>
+            <span className="text-2xl font-bold text-white">BrawlTokens</span>
+          </Link>
+
+          <div className="bg-[#12121a] border border-[#22c55e]/50 rounded-2xl p-8 text-center">
+            {/* Success Icon */}
+            <div className="w-20 h-20 mx-auto mb-6 bg-[#22c55e]/20 rounded-full flex items-center justify-center">
+              <svg className="w-10 h-10 text-[#22c55e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+
+            <h1 className="text-2xl font-bold text-white mb-4">Check your email!</h1>
+
+            <p className="text-gray-400 mb-6">
+              We sent a confirmation link to<br />
+              <span className="text-white font-semibold">{email}</span>
+            </p>
+
+            <div className="bg-[#f6a21a]/10 border border-[#f6a21a]/30 rounded-xl p-4 mb-6">
+              <p className="text-[#f6a21a] text-sm">
+                Click the link in the email to activate your account and receive your <strong>50 free tokens!</strong>
+              </p>
+            </div>
+
+            <p className="text-gray-500 text-sm mb-6">
+              Didn&apos;t receive the email? Check your spam folder.
+            </p>
+
+            <Link
+              href="/login"
+              className="inline-block btn-primary px-8 py-3 rounded-xl font-semibold"
+            >
+              Go to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4">

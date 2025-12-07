@@ -24,7 +24,9 @@ export default function Login() {
         if (error.includes('Invalid login credentials')) {
           setError('Invalid email or password');
         } else if (error.includes('Email not confirmed')) {
-          setError('Please confirm your email before signing in');
+          setError('Please confirm your email before signing in. Check your inbox!');
+        } else if (error.includes('Too many requests')) {
+          setError('Too many attempts. Please wait a moment and try again.');
         } else {
           setError(error);
         }
@@ -63,8 +65,11 @@ export default function Login() {
           <p className="text-gray-400 text-center mb-8">Sign in to continue</p>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm">
-              {error}
+            <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm flex items-start gap-3">
+              <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{error}</span>
             </div>
           )}
 
