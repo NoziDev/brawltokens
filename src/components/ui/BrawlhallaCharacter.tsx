@@ -1,295 +1,168 @@
 'use client';
 
-import Image from 'next/image';
-
-// Liste des personnages Brawlhalla avec leurs SPLASH ARTS (corps entier)
+// Liste complète des légendes Brawlhalla
 export const brawlhallaLegends = [
-  { name: "Bodvar", image: "https://cms.brawlhalla.com/c/uploads/2022/02/BodvarSplash-1.png" },
-  { name: "Cassidy", image: "https://cms.brawlhalla.com/c/uploads/2022/02/CassidySplash-1.png" },
-  { name: "Orion", image: "https://cms.brawlhalla.com/c/uploads/2022/02/OrionSplash-1.png" },
-  { name: "Lord Vraxx", image: "https://cms.brawlhalla.com/c/uploads/2022/02/VraxxSplash.png" },
-  { name: "Gnash", image: "https://cms.brawlhalla.com/c/uploads/2022/02/GnashSplash.png" },
-  { name: "Queen Nai", image: "https://cms.brawlhalla.com/c/uploads/2022/02/NaiSplash.png" },
-  { name: "Hattori", image: "https://cms.brawlhalla.com/c/uploads/2022/02/HattoriSplash.png" },
-  { name: "Sir Roland", image: "https://cms.brawlhalla.com/c/uploads/2022/02/RolandSplash.png" },
-  { name: "Scarlet", image: "https://cms.brawlhalla.com/c/uploads/2022/02/ScarletSplash.png" },
-  { name: "Thatch", image: "https://cms.brawlhalla.com/c/uploads/2022/02/UpdatedThatch.png" },
-  { name: "Ada", image: "https://cms.brawlhalla.com/c/uploads/2022/02/AdaSplash.png" },
-  { name: "Sentinel", image: "https://cms.brawlhalla.com/c/uploads/2022/05/UpdatedSentinel.png" },
-  { name: "Lucien", image: "https://cms.brawlhalla.com/c/uploads/2022/02/LucienSplash.png" },
-  { name: "Teros", image: "https://cms.brawlhalla.com/c/uploads/2022/02/TerosSplash.png" },
-  { name: "Brynn", image: "https://cms.brawlhalla.com/c/uploads/2022/02/BrynnSplash.png" },
-  { name: "Asuri", image: "https://cms.brawlhalla.com/c/uploads/2022/02/AsuriSplash.png" },
-  { name: "Barraza", image: "https://cms.brawlhalla.com/c/uploads/2022/02/BarrazaSplash.png" },
-  { name: "Ember", image: "https://cms.brawlhalla.com/c/uploads/2022/02/EmberSplash.png" },
-  { name: "Azoth", image: "https://cms.brawlhalla.com/c/uploads/2022/03/AzothSplash.png" },
-  { name: "Koji", image: "https://cms.brawlhalla.com/c/uploads/2022/03/KojiSplash.png" },
-  { name: "Ulgrim", image: "https://cms.brawlhalla.com/c/uploads/2022/03/UlgrimSplash.png" },
-  { name: "Diana", image: "https://cms.brawlhalla.com/c/uploads/2022/03/DianaSplash.png" },
-  { name: "Jhala", image: "https://cms.brawlhalla.com/c/uploads/2022/03/JhalaSplash.png" },
-  { name: "Kor", image: "https://cms.brawlhalla.com/c/uploads/2022/03/KorSplash.png" },
-  { name: "Wu Shang", image: "https://cms.brawlhalla.com/c/uploads/2022/03/WuShangSplash.png" },
-  { name: "Val", image: "https://cms.brawlhalla.com/c/uploads/2022/05/ValSplash.png" },
-  { name: "Ragnir", image: "https://cms.brawlhalla.com/c/uploads/2022/05/RagnirSplash.png" },
-  { name: "Cross", image: "https://cms.brawlhalla.com/c/uploads/2022/05/CrossSplashNoShadow.png" },
-  { name: "Mirage", image: "https://cms.brawlhalla.com/c/uploads/2022/05/MirageSplash.png" },
-  { name: "Nix", image: "https://cms.brawlhalla.com/c/uploads/2022/05/ReaperPromoChar.png" },
-  { name: "Mordex", image: "https://cms.brawlhalla.com/c/uploads/2022/05/MordexSplash.png" },
-  { name: "Yumiko", image: "https://cms.brawlhalla.com/c/uploads/2022/05/Yumiko1.png" },
-  { name: "Artemis", image: "https://cms.brawlhalla.com/c/uploads/2022/05/ArtemisSplash.png" },
-  { name: "Caspian", image: "https://cms.brawlhalla.com/c/uploads/2022/05/CaspianSplash.png" },
-  { name: "Sidra", image: "https://cms.brawlhalla.com/c/uploads/2022/05/SidraSplash.png" },
-  { name: "Xull", image: "https://cms.brawlhalla.com/c/uploads/2022/05/UpdatedXull.png" },
-  { name: "Kaya", image: "https://cms.brawlhalla.com/c/uploads/2022/05/KayaSplash.png" },
-  { name: "Isaiah", image: "https://cms.brawlhalla.com/c/uploads/2022/05/IsaiahSplash.png" },
-  { name: "Jiro", image: "https://cms.brawlhalla.com/c/uploads/2022/05/JiroSplash.png" },
-  { name: "Lin Fei", image: "https://cms.brawlhalla.com/c/uploads/2022/05/LinFeiSplash.png" },
-  { name: "Zariel", image: "https://cms.brawlhalla.com/c/uploads/2022/05/ZarielSplash.png" },
-  { name: "Rayman", image: "https://cms.brawlhalla.com/c/uploads/2022/05/RaymanSplash_Single.png" },
-  { name: "Dusk", image: "https://cms.brawlhalla.com/c/uploads/2022/05/DuskSplash.png" },
-  { name: "Fait", image: "https://cms.brawlhalla.com/c/uploads/2022/05/FaitSplash.png" },
-  { name: "Thor", image: "https://cms.brawlhalla.com/c/uploads/2022/05/ThorSplash_Isolated.png" },
-  { name: "Petra", image: "https://cms.brawlhalla.com/c/uploads/2022/06/PetraSplash.png" },
-  { name: "Vector", image: "https://cms.brawlhalla.com/c/uploads/2022/05/VectorSplash.png" },
-  { name: "Volkov", image: "https://cms.brawlhalla.com/c/uploads/2022/05/VolkovSplash.png" },
-  { name: "Onyx", image: "https://cms.brawlhalla.com/c/uploads/2022/05/GargoyleSplash_Edit.png" },
-  { name: "Jaeyun", image: "https://cms.brawlhalla.com/c/uploads/2022/05/Jaeyun_New.png" },
-  { name: "Mako", image: "https://cms.brawlhalla.com/c/uploads/2022/05/MakoSplash-1.png" },
-  { name: "Magyar", image: "https://cms.brawlhalla.com/c/uploads/2022/05/Magyar-Splash0001.png" },
-  { name: "Reno", image: "https://cms.brawlhalla.com/c/uploads/2022/05/Reno-Splash0001.png" },
+  { name: 'Bodvar', image: '/legends/bodvar.png' },
+  { name: 'Cassidy', image: '/legends/cassidy.png' },
+  { name: 'Orion', image: '/legends/orion.png' },
+  { name: 'Lord Vraxx', image: '/legends/vraxx.png' },
+  { name: 'Gnash', image: '/legends/gnash.png' },
+  { name: 'Queen Nai', image: '/legends/nai.png' },
+  { name: 'Hattori', image: '/legends/hattori.png' },
+  { name: 'Sir Roland', image: '/legends/roland.png' },
+  { name: 'Scarlet', image: '/legends/scarlet.png' },
+  { name: 'Thatch', image: '/legends/thatch.png' },
+  { name: 'Ada', image: '/legends/ada.png' },
+  { name: 'Sentinel', image: '/legends/sentinel.png' },
+  { name: 'Lucien', image: '/legends/lucien.png' },
+  { name: 'Teros', image: '/legends/teros.png' },
+  { name: 'Brynn', image: '/legends/brynn.png' },
+  { name: 'Asuri', image: '/legends/asuri.png' },
+  { name: 'Barraza', image: '/legends/barraza.png' },
+  { name: 'Ember', image: '/legends/ember.png' },
+  { name: 'Azoth', image: '/legends/azoth.png' },
+  { name: 'Koji', image: '/legends/koji.png' },
+  { name: 'Ulgrim', image: '/legends/ulgrim.png' },
+  { name: 'Diana', image: '/legends/diana.png' },
+  { name: 'Jhala', image: '/legends/jhala.png' },
+  { name: 'Kor', image: '/legends/kor.png' },
+  { name: 'Wu Shang', image: '/legends/wushang.png' },
+  { name: 'Val', image: '/legends/val.png' },
+  { name: 'Ragnir', image: '/legends/ragnir.png' },
+  { name: 'Cross', image: '/legends/cross.png' },
+  { name: 'Mirage', image: '/legends/mirage.png' },
+  { name: 'Nix', image: '/legends/nix.png' },
+  { name: 'Mordex', image: '/legends/mordex.png' },
+  { name: 'Yumiko', image: '/legends/yumiko.png' },
+  { name: 'Artemis', image: '/legends/artemis.png' },
+  { name: 'Caspian', image: '/legends/caspian.png' },
+  { name: 'Sidra', image: '/legends/sidra.png' },
+  { name: 'Xull', image: '/legends/xull.png' },
+  { name: 'Kaya', image: '/legends/kaya.png' },
+  { name: 'Isaiah', image: '/legends/isaiah.png' },
+  { name: 'Jiro', image: '/legends/jiro.png' },
+  { name: 'Lin Fei', image: '/legends/linfei.png' },
+  { name: 'Zariel', image: '/legends/zariel.png' },
+  { name: 'Rayman', image: '/legends/rayman.png' },
+  { name: 'Dusk', image: '/legends/dusk.png' },
+  { name: 'Fait', image: '/legends/fait.png' },
+  { name: 'Thor', image: '/legends/thor.png' },
+  { name: 'Petra', image: '/legends/petra.png' },
+  { name: 'Vector', image: '/legends/vector.png' },
+  { name: 'Volkov', image: '/legends/volkov.png' },
+  { name: 'Onyx', image: '/legends/onyx.png' },
+  { name: 'Jaeyun', image: '/legends/jaeyun.png' },
+  { name: 'Mako', image: '/legends/mako.png' },
+  { name: 'Magyar', image: '/legends/magyar.png' },
+  { name: 'Reno', image: '/legends/reno.png' },
+  { name: 'Munin', image: '/legends/munin.png' },
+  { name: 'Arcadia', image: '/legends/arcadia.png' },
+  { name: 'Ezio', image: '/legends/ezio.png' },
+  { name: 'Tezca', image: '/legends/tezca.png' },
+  { name: 'Thea', image: '/legends/thea.png' },
+  { name: 'Red Raptor', image: '/legends/redraptor.png' },
+  { name: 'Loki', image: '/legends/loki.png' },
+  { name: 'Seven', image: '/legends/seven.png' },
+  { name: 'Vivi', image: '/legends/vivi.png' },
+  { name: 'Nimue', image: '/legends/nimue.png' },
 ];
 
-interface LegendCardProps {
-  legend: typeof brawlhallaLegends[0];
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  className?: string;
-  showName?: boolean;
-  animated?: boolean;
+interface LegendPickerProps {
+  selectedLegend: string;
+  onSelect: (legend: string) => void;
+  onClose: () => void;
 }
 
-export function LegendCard({
-  legend,
-  size = 'md',
-  className = '',
-  showName = true,
-  animated = true
-}: LegendCardProps) {
+export function LegendPicker({ selectedLegend, onSelect, onClose }: LegendPickerProps) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        onClick={onClose}
+      ></div>
+
+      {/* Modal */}
+      <div className="relative bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-6 max-w-4xl w-full max-h-[80vh] overflow-hidden animate-slide-in">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-bold text-white">Choose your Legend</h3>
+          <p className="text-gray-400 mt-2">Select the character you will play</p>
+        </div>
+
+        {/* Legends Grid */}
+        <div className="overflow-y-auto max-h-[60vh] pr-2">
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+            {brawlhallaLegends.map((legend) => (
+              <button
+                key={legend.name}
+                onClick={() => {
+                  onSelect(legend.name);
+                  onClose();
+                }}
+                className={`relative p-2 rounded-xl transition-all hover:scale-105 ${
+                  selectedLegend === legend.name
+                    ? 'bg-[#8b5cf6] ring-2 ring-[#8b5cf6] ring-offset-2 ring-offset-[#12121a]'
+                    : 'bg-[#1a1a2e] hover:bg-[#2a2a3e]'
+                }`}
+              >
+                {/* Legend icon placeholder - will use first letter if no image */}
+                <div className="w-full aspect-square bg-gradient-to-br from-[#2a2a3e] to-[#1a1a2e] rounded-lg flex items-center justify-center mb-1">
+                  <span className="text-2xl font-bold text-white/80">
+                    {legend.name.charAt(0)}
+                  </span>
+                </div>
+                <div className="text-xs text-center text-white truncate">
+                  {legend.name}
+                </div>
+                {selectedLegend === legend.name && (
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Component to display a legend badge
+interface LegendBadgeProps {
+  legend: string;
+  size?: 'sm' | 'md' | 'lg';
+  onClick?: () => void;
+}
+
+export function LegendBadge({ legend, size = 'md', onClick }: LegendBadgeProps) {
   const sizeClasses = {
-    sm: 'w-24 h-32',
-    md: 'w-40 h-52',
-    lg: 'w-56 h-72',
-    xl: 'w-72 h-96'
-  };
-
-  const imageSizes = {
-    sm: 96,
-    md: 160,
-    lg: 224,
-    xl: 288
+    sm: 'w-8 h-8 text-xs',
+    md: 'w-12 h-12 text-sm',
+    lg: 'w-16 h-16 text-lg',
   };
 
   return (
-    <div className={`relative ${sizeClasses[size]} ${className} ${animated ? 'float' : ''}`}>
-      <div className="relative w-full h-full">
-        <Image
-          src={legend.image}
-          alt={legend.name}
-          width={imageSizes[size]}
-          height={imageSizes[size] * 1.3}
-          className={`object-contain w-full h-full drop-shadow-[0_0_15px_rgba(246,162,26,0.5)] ${animated ? 'hover:scale-110 transition-transform duration-300' : ''}`}
-          unoptimized
-        />
-      </div>
-      {showName && (
-        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap">
-          <span className="text-xs font-bold text-white bg-black/70 px-2 py-1 rounded-full border border-[#f6a21a]/50">
-            {legend.name}
-          </span>
-        </div>
-      )}
-    </div>
-  );
-}
-
-interface FloatingLegendsProps {
-  count?: number;
-  className?: string;
-}
-
-export function FloatingLegends({ count = 6, className = '' }: FloatingLegendsProps) {
-  // Selectionner des personnages aleatoires
-  const selectedLegends = brawlhallaLegends.slice(0, count);
-
-  return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
-      {selectedLegends.map((legend, index) => {
-        const positions = [
-          { left: '5%', top: '20%' },
-          { right: '5%', top: '15%' },
-          { left: '10%', bottom: '20%' },
-          { right: '10%', bottom: '25%' },
-          { left: '15%', top: '50%' },
-          { right: '15%', top: '45%' },
-        ];
-        const pos = positions[index % positions.length];
-        const delay = index * 0.5;
-
-        return (
-          <div
-            key={legend.name}
-            className="absolute w-40 h-52 opacity-30 hover:opacity-60 transition-opacity"
-            style={{
-              ...pos,
-              animationDelay: `${delay}s`
-            }}
-          >
-            <div className={`float-delay-${index % 4}`}>
-              <Image
-                src={legend.image}
-                alt={legend.name}
-                width={160}
-                height={208}
-                className="object-contain w-full h-full drop-shadow-[0_0_20px_rgba(246,162,26,0.3)]"
-                unoptimized
-              />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-interface LegendShowcaseProps {
-  className?: string;
-}
-
-export function LegendShowcase({ className = '' }: LegendShowcaseProps) {
-  const featuredLegends = [
-    brawlhallaLegends[0],  // Bodvar
-    brawlhallaLegends[6],  // Hattori
-    brawlhallaLegends[30], // Mordex
-  ];
-
-  return (
-    <div className={`flex items-center justify-center gap-8 ${className}`}>
-      {/* Left character */}
-      <div className="relative float-delay-1 hidden md:block">
-        <Image
-          src={featuredLegends[0].image}
-          alt={featuredLegends[0].name}
-          width={250}
-          height={325}
-          className="object-contain drop-shadow-[0_0_30px_rgba(246,162,26,0.5)] transform -scale-x-100"
-          unoptimized
-        />
-      </div>
-
-      {/* Center character (larger) */}
-      <div className="relative float z-10">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#f6a21a]/30 to-transparent rounded-full blur-3xl"></div>
-        <Image
-          src={featuredLegends[1].image}
-          alt={featuredLegends[1].name}
-          width={350}
-          height={455}
-          className="object-contain relative z-10 drop-shadow-[0_0_40px_rgba(246,162,26,0.6)]"
-          unoptimized
-        />
-      </div>
-
-      {/* Right character */}
-      <div className="relative float-delay-2 hidden md:block">
-        <Image
-          src={featuredLegends[2].image}
-          alt={featuredLegends[2].name}
-          width={250}
-          height={325}
-          className="object-contain drop-shadow-[0_0_30px_rgba(246,162,26,0.5)]"
-          unoptimized
-        />
-      </div>
-    </div>
-  );
-}
-
-interface LegendCarouselProps {
-  className?: string;
-}
-
-export function LegendCarousel({ className = '' }: LegendCarouselProps) {
-  return (
-    <div className={`relative overflow-hidden ${className}`}>
-      <div className="flex animate-scroll-left">
-        {[...brawlhallaLegends, ...brawlhallaLegends].map((legend, index) => (
-          <div
-            key={`${legend.name}-${index}`}
-            className="flex-shrink-0 mx-4 group"
-          >
-            <div className="relative w-28 h-36 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-2">
-              <Image
-                src={legend.image}
-                alt={legend.name}
-                width={112}
-                height={144}
-                className="object-contain w-full h-full drop-shadow-[0_0_10px_rgba(246,162,26,0.3)] group-hover:drop-shadow-[0_0_20px_rgba(246,162,26,0.6)]"
-                unoptimized
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-interface VSDisplayProps {
-  legend1: typeof brawlhallaLegends[0];
-  legend2: typeof brawlhallaLegends[0];
-  className?: string;
-}
-
-export function VSDisplay({ legend1, legend2, className = '' }: VSDisplayProps) {
-  return (
-    <div className={`flex items-center justify-center gap-4 ${className}`}>
-      {/* Player 1 */}
-      <div className="relative">
-        <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl"></div>
-        <Image
-          src={legend1.image}
-          alt={legend1.name}
-          width={180}
-          height={234}
-          className="object-contain relative z-10 drop-shadow-[0_0_20px_rgba(59,130,246,0.5)] transform -scale-x-100 float-delay-1"
-          unoptimized
-        />
-        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-blue-500 px-3 py-1 rounded-full">
-          <span className="text-white text-sm font-bold">{legend1.name}</span>
-        </div>
-      </div>
-
-      {/* VS */}
-      <div className="relative z-20">
-        <span className="text-5xl font-black text-[#f6a21a] vs-text drop-shadow-[0_0_20px_rgba(246,162,26,0.8)]">
-          VS
-        </span>
-      </div>
-
-      {/* Player 2 */}
-      <div className="relative">
-        <div className="absolute inset-0 bg-red-500/20 rounded-full blur-2xl"></div>
-        <Image
-          src={legend2.image}
-          alt={legend2.name}
-          width={180}
-          height={234}
-          className="object-contain relative z-10 drop-shadow-[0_0_20px_rgba(239,68,68,0.5)] float-delay-2"
-          unoptimized
-        />
-        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-red-500 px-3 py-1 rounded-full">
-          <span className="text-white text-sm font-bold">{legend2.name}</span>
-        </div>
-      </div>
+    <div
+      onClick={onClick}
+      className={`${sizeClasses[size]} bg-gradient-to-br from-[#8b5cf6] to-[#06b6d4] rounded-xl flex items-center justify-center ${
+        onClick ? 'cursor-pointer hover:scale-105 transition-transform' : ''
+      }`}
+    >
+      <span className="font-bold text-white">{legend.charAt(0)}</span>
     </div>
   );
 }

@@ -83,7 +83,26 @@ CREATE POLICY "Authenticated users can create transactions" ON public.transactio
 -- NOTE: First create the user via the app, then run this to make them admin:
 -- UPDATE public.users SET is_admin = true WHERE username = 'Nozi';
 
+-- Chat messages table for match chat
+CREATE TABLE IF NOT EXISTS public.messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  match_id UUID REFERENCES public.matches(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  username TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone in match can view messages" ON public.messages
+  FOR SELECT USING (true);
+
+CREATE POLICY "Users can send messages" ON public.messages
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_users_username ON public.users(username);
 CREATE INDEX IF NOT EXISTS idx_matches_status ON public.matches(status);
 CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON public.transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_messages_match_id ON public.messages(match_id);
