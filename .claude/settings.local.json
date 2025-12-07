@@ -11,7 +11,11 @@
       "Bash(git push:*)",
       "Bash(git config:*)",
       "Bash(npm install:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(git fetch:*)",
+      "WebFetch(domain:brawltokens.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []
