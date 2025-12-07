@@ -116,48 +116,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signUp = async (email: string, password: string, username: string) => {
-    // Check if username is taken
-    const { data: existingUser } = await supabase
-      .from('users')
-      .select('username')
-      .eq('username', username)
-      .single()
+    try {
+      // Check if username is taken
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('username')
+        .eq('username', username)
+        .maybeSingle()
 
-    if (existingUser) {
-      return { error: 'Username already taken' }
-    }
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: 'https://brawltokens.com'
+      if (existingUser) {
+        return { error: 'Username already taken' }
       }
-    })
 
-    if (error) {
-      return { error: error.message }
-    }
-
-    if (data.user) {
-      // Create user profile with 50 bonus tokens
-      const { error: profileError } = await supabase.from('users').insert({
-        id: data.user.id,
-        email: email,
-        username: username,
-        tokens: 50, // Sign-up bonus
-        elo: 1500,
-        wins: 0,
-        losses: 0,
-        is_admin: false
+      // Create auth user
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+          data: {
+            username: username
+          }
+        }
       })
 
-      if (profileError) {
-        return { error: profileError.message }
+      if (error) {
+        return { error: error.message }
       }
-    }
 
-    return { error: null }
+      if (data.user) {
+        // Create user profile with 50 bonus tokens
+        const { error: profileError } = await supabase.from('users').insert({
+          id: data.user.id,
+          email: email,
+          username: username,
+          tokens: 50,
+          elo: 1500,
+          wins: 0,
+          losses: 0,
+          is_admin: false
+        })
+
+        if (profileError) {
+          console.error('Profile creation error:', profileError)
+          // Don't return error - user is created, profile will be created on first login
+        }
+      }
+
+      return { error: null }
+    } catch (err) {
+      console.error('Sign up error:', err)
+      return { error: 'Registration failed. Please try again.' }
+    }
   }
 
   const signOut = async () => {
