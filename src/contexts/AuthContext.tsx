@@ -94,7 +94,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: 'Username already taken' }
     }
 
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: 'https://brawltokens.com'
+      }
+    })
 
     if (error) {
       return { error: error.message }
