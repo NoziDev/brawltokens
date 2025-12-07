@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useToast } from '@/components/ui/Toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Match {
   id: number;
@@ -14,6 +16,8 @@ interface Match {
 export default function Games() {
   const [selectedStake, setSelectedStake] = useState<number>(50);
   const [isSearching, setIsSearching] = useState(false);
+  const { showToast } = useToast();
+  const { user, profile } = useAuth();
 
   const stakes = [10, 25, 50, 100, 250, 500];
 
@@ -22,15 +26,29 @@ export default function Games() {
   const liveMatches: { id: number; player1: string; player2: string; stake: number; time: string }[] = [];
 
   const handleStartSearch = () => {
+    if (!user) {
+      showToast('Please login to find a match', 'warning');
+      return;
+    }
+
+    if (!profile || profile.tokens < selectedStake) {
+      showToast('Not enough tokens! Buy more in the shop.', 'error');
+      return;
+    }
+
     setIsSearching(true);
     setTimeout(() => {
       setIsSearching(false);
-      alert('No match found. Try again later!');
+      showToast('No opponent found. Try again later!', 'info');
     }, 3000);
   };
 
   const handleJoinMatch = (matchId: number) => {
-    alert(`Joining match #${matchId}`);
+    if (!user) {
+      showToast('Please login to join a match', 'warning');
+      return;
+    }
+    showToast(`Joining match #${matchId}...`, 'info');
   };
 
   return (

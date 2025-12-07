@@ -1,62 +1,154 @@
 'use client';
 
 import { useState } from 'react';
+import { useToast } from '@/components/ui/Toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { ADMIN_WALLET } from '@/lib/supabase';
 
 export default function Shop() {
   const [selectedPack, setSelectedPack] = useState<number | null>(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [currentPack, setCurrentPack] = useState<typeof tokenPacks[0] | null>(null);
+  const [copied, setCopied] = useState(false);
+  const { showToast } = useToast();
+  const { user } = useAuth();
 
   const tokenPacks = [
-    {
-      id: 1,
-      tokens: 10,
-      price: 10,
-      bonus: 0,
-      popular: false
-    },
-    {
-      id: 2,
-      tokens: 25,
-      price: 25,
-      bonus: 2,
-      popular: false
-    },
-    {
-      id: 3,
-      tokens: 50,
-      price: 50,
-      bonus: 5,
-      popular: true
-    },
-    {
-      id: 4,
-      tokens: 100,
-      price: 100,
-      bonus: 15,
-      popular: false
-    },
-    {
-      id: 5,
-      tokens: 250,
-      price: 250,
-      bonus: 50,
-      popular: false
-    },
-    {
-      id: 6,
-      tokens: 500,
-      price: 500,
-      bonus: 125,
-      popular: false
-    }
+    { id: 1, tokens: 10, price: 10, priceETH: 0.003, bonus: 0, popular: false },
+    { id: 2, tokens: 25, price: 25, priceETH: 0.007, bonus: 2, popular: false },
+    { id: 3, tokens: 50, price: 50, priceETH: 0.014, bonus: 5, popular: true },
+    { id: 4, tokens: 100, price: 100, priceETH: 0.028, bonus: 15, popular: false },
+    { id: 5, tokens: 250, price: 250, priceETH: 0.07, bonus: 50, popular: false },
+    { id: 6, tokens: 500, price: 500, priceETH: 0.14, bonus: 125, popular: false }
   ];
 
-  const handlePurchase = (packId: number) => {
-    setSelectedPack(packId);
-    alert('Payment integration coming soon!');
+  const handlePurchase = (pack: typeof tokenPacks[0]) => {
+    if (!user) {
+      showToast('Please login to buy tokens', 'warning');
+      return;
+    }
+    setCurrentPack(pack);
+    setShowPaymentModal(true);
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    showToast('Wallet address copied!', 'success');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const closeModal = () => {
+    setShowPaymentModal(false);
+    setCurrentPack(null);
   };
 
   return (
     <div className="min-h-screen py-12">
+      {/* Payment Modal */}
+      {showPaymentModal && currentPack && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={closeModal}
+          ></div>
+
+          {/* Modal */}
+          <div className="relative bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-8 max-w-md w-full animate-slide-in">
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#627eea] to-[#8b5cf6] rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold text-xl">ETH</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white">Pay with Ethereum</h3>
+              <p className="text-gray-400 mt-2">Send exactly the amount below</p>
+            </div>
+
+            {/* Amount */}
+            <div className="bg-[#0a0a0f] rounded-xl p-4 mb-4">
+              <div className="text-center">
+                <div className="text-sm text-gray-400 mb-1">Amount to send</div>
+                <div className="text-3xl font-bold text-[#627eea]">{currentPack.priceETH} ETH</div>
+                <div className="text-gray-400 text-sm mt-1">≈ ${currentPack.price} USD</div>
+              </div>
+            </div>
+
+            {/* Tokens you'll receive */}
+            <div className="bg-[#0a0a0f] rounded-xl p-4 mb-4">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">You'll receive</span>
+                <span className="text-[#f6a21a] font-bold text-xl">
+                  {currentPack.tokens + currentPack.bonus} tokens
+                </span>
+              </div>
+              {currentPack.bonus > 0 && (
+                <div className="text-green-400 text-sm text-right">
+                  (includes +{currentPack.bonus} bonus)
+                </div>
+              )}
+            </div>
+
+            {/* Wallet Address */}
+            <div className="mb-6">
+              <div className="text-sm text-gray-400 mb-2">Send to this wallet:</div>
+              <div
+                className="bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl p-4 cursor-pointer hover:border-[#627eea] transition-colors group"
+                onClick={() => copyToClipboard(ADMIN_WALLET)}
+              >
+                <div className="flex items-center justify-between">
+                  <code className="text-white text-xs break-all">{ADMIN_WALLET}</code>
+                  <button className="ml-3 text-gray-400 group-hover:text-[#627eea] transition-colors flex-shrink-0">
+                    {copied ? (
+                      <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mb-6">
+              <div className="flex gap-3">
+                <svg className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div className="text-sm text-yellow-400">
+                  <p className="font-semibold mb-1">Important:</p>
+                  <ul className="space-y-1 text-yellow-400/80">
+                    <li>• Send exactly <span className="font-bold">{currentPack.priceETH} ETH</span></li>
+                    <li>• On Ethereum Mainnet only</li>
+                    <li>• Tokens credited within 10 mins</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact */}
+            <div className="text-center text-sm text-gray-400">
+              <p>After payment, contact admin with your transaction hash</p>
+              <p className="text-[#8b5cf6] mt-1">Tokens will be credited manually</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0f]"></div>
@@ -85,8 +177,8 @@ export default function Shop() {
             {tokenPacks.map((pack) => (
               <div
                 key={pack.id}
-                className={`relative bg-[#12121a] border rounded-2xl overflow-hidden card-hover ${
-                  pack.popular ? 'border-[#f6a21a] glow' : 'border-[#2a2a3e]'
+                className={`relative bg-[#12121a] border rounded-2xl overflow-hidden transition-all hover:scale-105 ${
+                  pack.popular ? 'border-[#f6a21a] shadow-[0_0_30px_rgba(246,162,26,0.3)]' : 'border-[#2a2a3e]'
                 }`}
               >
                 {pack.popular && (
@@ -119,8 +211,11 @@ export default function Shop() {
                   )}
 
                   {/* Price */}
-                  <div className="text-center mb-6">
-                    <span className="text-4xl font-bold gradient-text">${pack.price}</span>
+                  <div className="text-center mb-2">
+                    <span className="text-4xl font-bold text-gradient">${pack.price}</span>
+                  </div>
+                  <div className="text-center text-[#627eea] text-sm mb-6">
+                    ≈ {pack.priceETH} ETH
                   </div>
 
                   {/* Value indicator */}
@@ -130,7 +225,7 @@ export default function Shop() {
 
                   {/* Purchase Button */}
                   <button
-                    onClick={() => handlePurchase(pack.id)}
+                    onClick={() => handlePurchase(pack)}
                     className={`w-full py-4 rounded-full font-bold transition-all ${
                       pack.popular
                         ? 'btn-primary text-black'
@@ -156,11 +251,14 @@ export default function Shop() {
 
           <div className="flex justify-center">
             {/* Crypto */}
-            <div className="bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl p-6 flex items-center gap-4">
+            <div className="bg-[#0a0a0f] border border-[#627eea] rounded-xl p-6 flex items-center gap-4">
               <div className="w-12 h-12 bg-[#627eea] rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">ETH</span>
               </div>
-              <span className="text-white font-medium">Ethereum (ETH)</span>
+              <div>
+                <span className="text-white font-medium block">Ethereum (ETH)</span>
+                <span className="text-gray-400 text-sm">Mainnet only</span>
+              </div>
             </div>
           </div>
         </div>
@@ -179,12 +277,17 @@ export default function Shop() {
 
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl p-6">
               <h3 className="text-white font-semibold mb-2">How do I receive my tokens?</h3>
-              <p className="text-gray-400">Tokens are credited instantly to your account after payment confirmation.</p>
+              <p className="text-gray-400">After sending ETH, contact admin with your transaction hash. Tokens are credited manually within 10 minutes.</p>
             </div>
 
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl p-6">
               <h3 className="text-white font-semibold mb-2">Can I get a refund?</h3>
               <p className="text-gray-400">Purchased tokens are non-refundable but can be withdrawn as real money.</p>
+            </div>
+
+            <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl p-6">
+              <h3 className="text-white font-semibold mb-2">Which network should I use?</h3>
+              <p className="text-gray-400">Only send ETH on Ethereum Mainnet. Do not use other networks.</p>
             </div>
           </div>
         </div>

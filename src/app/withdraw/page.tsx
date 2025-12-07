@@ -1,34 +1,83 @@
 'use client';
 
 import { useState } from 'react';
+import { useToast } from '@/components/ui/Toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 export default function Withdraw() {
   const [amount, setAmount] = useState<string>('');
   const [address, setAddress] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { showToast } = useToast();
+  const { user, profile, refreshProfile } = useAuth();
 
-  const userBalance = 0;
+  const userBalance = profile?.tokens || 0;
   const minWithdraw = 500;
-  const conversionRate = 1; // 1 token = 1 USD
+  const conversionRate = 1;
 
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
+    if (!user) {
+      showToast('Please login to withdraw', 'warning');
+      return;
+    }
+
     const numAmount = parseInt(amount);
     if (isNaN(numAmount) || numAmount < minWithdraw) {
-      alert(`Minimum withdrawal: ${minWithdraw} tokens`);
+      showToast(`Minimum withdrawal: ${minWithdraw} tokens`, 'error');
       return;
     }
     if (numAmount > userBalance) {
-      alert('Insufficient balance');
+      showToast('Insufficient balance', 'error');
       return;
     }
-    if (!address) {
-      alert('Please enter your wallet address');
+    if (!address || !address.startsWith('0x') || address.length !== 42) {
+      showToast('Please enter a valid Ethereum wallet address', 'error');
       return;
     }
-    alert('Withdrawal request sent!');
+
+    setIsProcessing(true);
+
+    // Create withdrawal transaction
+    const { error: txError } = await supabase.from('transactions').insert({
+      user_id: user.id,
+      type: 'withdrawal',
+      amount: -numAmount,
+      status: 'pending',
+      tx_hash: address
+    });
+
+    if (txError) {
+      showToast('Error submitting request: ' + txError.message, 'error');
+      setIsProcessing(false);
+      return;
+    }
+
+    // Deduct tokens from user balance
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ tokens: userBalance - numAmount })
+      .eq('id', user.id);
+
+    if (updateError) {
+      showToast('Error updating balance: ' + updateError.message, 'error');
+      setIsProcessing(false);
+      return;
+    }
+
+    showToast('Withdrawal request submitted! You will receive your ETH within 24h.', 'success');
+    setAmount('');
+    setAddress('');
+    setIsProcessing(false);
+
+    // Refresh profile to update balance
+    if (refreshProfile) {
+      refreshProfile();
+    }
   };
 
   const calculateUsd = (tokens: number) => {
-    const fee = 0.01; // 1% fee
+    const fee = 0.01;
     return ((tokens * conversionRate) * (1 - fee)).toFixed(2);
   };
 
@@ -74,9 +123,9 @@ export default function Withdraw() {
               <h2 className="text-xl font-bold text-white mb-6">Withdrawal Method</h2>
 
               <div className="mb-8">
-                <div className="p-4 rounded-xl border-2 border-[#f6a21a] bg-[#f6a21a]/10">
+                <div className="p-4 rounded-xl border-2 border-[#627eea] bg-[#627eea]/10">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[#f7931a] rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-[#627eea] rounded-lg flex items-center justify-center">
                       <span className="text-white font-bold">ETH</span>
                     </div>
                     <div className="text-left">
@@ -96,11 +145,11 @@ export default function Withdraw() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="500"
-                    className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-4 text-white text-xl focus:outline-none focus:border-[#f6a21a]"
+                    className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-4 text-white text-xl focus:outline-none focus:border-[#627eea]"
                   />
                   <button
                     onClick={() => setAmount(userBalance.toString())}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#f6a21a] text-sm font-semibold hover:underline"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#627eea] text-sm font-semibold hover:underline"
                   >
                     MAX
                   </button>
@@ -115,28 +164,42 @@ export default function Withdraw() {
               {/* Address Input */}
               <div className="mb-6">
                 <label className="text-gray-400 text-sm mb-2 block">
-                  Ethereum wallet address
+                  Your Ethereum wallet address
                 </label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="0x..."
-                  className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#f6a21a]"
+                  className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#627eea] font-mono"
                 />
               </div>
 
               {/* Withdraw Button */}
               <button
                 onClick={handleWithdraw}
-                disabled={userBalance < minWithdraw}
-                className={`w-full py-4 rounded-xl font-bold text-lg ${
-                  userBalance >= minWithdraw
+                disabled={!user || userBalance < minWithdraw || isProcessing}
+                className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${
+                  user && userBalance >= minWithdraw && !isProcessing
                     ? 'btn-primary text-black'
                     : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                {userBalance >= minWithdraw ? 'Request Withdrawal' : 'Insufficient Balance'}
+                {isProcessing ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Processing...
+                  </span>
+                ) : !user ? (
+                  'Please Login'
+                ) : userBalance >= minWithdraw ? (
+                  'Request Withdrawal'
+                ) : (
+                  'Insufficient Balance (Min: 500)'
+                )}
               </button>
             </div>
           </div>
@@ -169,15 +232,32 @@ export default function Withdraw() {
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  ETH withdrawal only
+                  ETH withdrawal only (Mainnet)
                 </li>
               </ul>
             </div>
 
-            {/* Transaction History */}
+            {/* How it works */}
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-6">
-              <h2 className="text-xl font-bold text-white mb-4">History</h2>
-              <p className="text-gray-400 text-center py-8">No withdrawals yet</p>
+              <h2 className="text-xl font-bold text-white mb-4">How it works</h2>
+              <ol className="space-y-4 text-gray-400 text-sm">
+                <li className="flex gap-3">
+                  <span className="w-6 h-6 rounded-full bg-[#627eea] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                  <span>Enter the amount you want to withdraw</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-6 h-6 rounded-full bg-[#627eea] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                  <span>Enter your ETH wallet address</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-6 h-6 rounded-full bg-[#627eea] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                  <span>Submit your request</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+                  <span>Receive ETH within 24 hours</span>
+                </li>
+              </ol>
             </div>
           </div>
         </div>
