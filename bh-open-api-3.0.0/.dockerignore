@@ -1,7 +1,0 @@
-frontend/build
-backend/dist
-node_modules
-**/node_modules
-npm-debug.log
-Dockerfile
-*.env*
