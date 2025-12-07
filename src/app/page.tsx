@@ -22,7 +22,7 @@ export default function Home() {
   const stats = [
     {
       value: "50K+",
-      label: "Joueurs",
+      label: "Players",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -31,7 +31,7 @@ export default function Home() {
     },
     {
       value: "1M+",
-      label: "Parties",
+      label: "Games",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -40,8 +40,8 @@ export default function Home() {
       )
     },
     {
-      value: "500K€",
-      label: "Distribues",
+      value: "$500K+",
+      label: "Paid Out",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -101,18 +101,18 @@ export default function Home() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            <span>2,450 joueurs en ligne</span>
+            <span>2,450 players online</span>
           </div>
 
           {/* Main Title */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight tracking-tight">
-            <span className="text-white">Joue.</span>{' '}
-            <span className="text-gradient">Gagne.</span>{' '}
-            <span className="text-white">Encaisse.</span>
+            <span className="text-white">Play.</span>{' '}
+            <span className="text-gradient">Win.</span>{' '}
+            <span className="text-white">Cash Out.</span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-            La plateforme de matchmaking Brawlhalla ou chaque victoire te rapporte des tokens echangeables contre de l&apos;argent reel.
+            The Brawlhalla matchmaking platform where every victory earns you tokens redeemable for real money.
           </p>
 
           {/* Search Bar - Corehalla style */}
@@ -123,7 +123,7 @@ export default function Home() {
               </svg>
               <input
                 type="text"
-                placeholder="Rechercher un joueur, un clan..."
+                placeholder="Search for a player, clan..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="input-search"
@@ -138,10 +138,10 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Trouver un Match
+              Find a Match
             </Link>
             <Link href="/register" className="btn-secondary px-8 py-4 rounded-xl text-lg inline-flex items-center justify-center gap-2">
-              Creer un compte
+              Create Account
             </Link>
           </div>
 
@@ -180,10 +180,10 @@ export default function Home() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                  <h2 className="text-2xl font-bold text-white">Matchs en Direct</h2>
+                  <h2 className="text-2xl font-bold text-white">Live Matches</h2>
                 </div>
                 <Link href="/games" className="text-[#8b5cf6] hover:text-[#a78bfa] text-sm font-medium transition-colors">
-                  Voir tout →
+                  View all →
                 </Link>
               </div>
 
@@ -238,10 +238,10 @@ export default function Home() {
 
                     <div className="flex gap-3 mt-4">
                       <button className="flex-1 btn-secondary py-2 rounded-lg text-sm">
-                        Regarder
+                        Watch
                       </button>
                       <button className="flex-1 btn-primary py-2 rounded-lg text-sm">
-                        Parier
+                        Bet
                       </button>
                     </div>
                   </div>
@@ -252,9 +252,9 @@ export default function Home() {
             {/* Leaderboard - 1 column */}
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Top Joueurs</h2>
+                <h2 className="text-2xl font-bold text-white">Top Players</h2>
                 <Link href="/leaderboard" className="text-[#8b5cf6] hover:text-[#a78bfa] text-sm font-medium transition-colors">
-                  Classement →
+                  Leaderboard →
                 </Link>
               </div>
 
@@ -286,7 +286,7 @@ export default function Home() {
                       {/* Info */}
                       <div className="flex-1">
                         <div className="font-semibold text-white text-sm">{player.name}</div>
-                        <div className="text-xs text-subtle">{player.wins} victoires</div>
+                        <div className="text-xs text-subtle">{player.wins} wins</div>
                       </div>
 
                       {/* ELO */}
@@ -307,16 +307,16 @@ export default function Home() {
       <section className="py-20 bg-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="badge badge-primary mb-4">Comment ca marche</div>
-            <h2 className="text-4xl md:text-5xl font-black text-white">3 etapes simples</h2>
+            <div className="badge badge-primary mb-4">How it works</div>
+            <h2 className="text-4xl md:text-5xl font-black text-white">3 simple steps</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 step: 1,
-                title: "Achete des Tokens",
-                desc: "1 token = 1 EUR. Paye par carte, PayPal ou crypto.",
+                title: "Buy Tokens",
+                desc: "1 token = $1. Pay with crypto.",
                 icon: (
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -326,8 +326,8 @@ export default function Home() {
               },
               {
                 step: 2,
-                title: "Trouve un Match",
-                desc: "Choisis ta mise et affronte un adversaire de ton niveau.",
+                title: "Find a Match",
+                desc: "Choose your stake and face an opponent at your level.",
                 icon: (
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -337,8 +337,8 @@ export default function Home() {
               },
               {
                 step: 3,
-                title: "Gagne & Retire",
-                desc: "Remporte le double de ta mise et retire en argent reel.",
+                title: "Win & Withdraw",
+                desc: "Win double your stake and withdraw real money.",
                 icon: (
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -389,25 +389,25 @@ export default function Home() {
             <div>
               <div className="badge badge-primary mb-4">Brawlhalla</div>
               <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-                Transforme ton <span className="text-gradient">skill</span> en argent
+                Turn your <span className="text-gradient">skill</span> into money
               </h2>
               <p className="text-lg text-muted mb-8 leading-relaxed">
-                Plus de 50 legendes jouables. Trouve ton main, perfectionne tes combos et domine l&apos;arene. Chaque victoire te rapproche du cashout.
+                Over 50 playable legends. Find your main, perfect your combos and dominate the arena. Every win brings you closer to cashing out.
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
                 <div className="p-4 rounded-xl bg-[#13131a] border border-[rgba(139,92,246,0.2)]">
                   <div className="text-2xl font-bold text-gradient">1-500</div>
-                  <div className="text-sm text-subtle">Tokens par match</div>
+                  <div className="text-sm text-subtle">Tokens per match</div>
                 </div>
                 <div className="p-4 rounded-xl bg-[#13131a] border border-[rgba(139,92,246,0.2)]">
                   <div className="text-2xl font-bold text-gradient">5%</div>
-                  <div className="text-sm text-subtle">Commission seulement</div>
+                  <div className="text-sm text-subtle">Commission only</div>
                 </div>
               </div>
 
               <Link href="/games" className="btn-gold px-8 py-4 rounded-xl text-lg inline-flex items-center gap-2">
-                Commencer a jouer
+                Start playing
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -466,20 +466,20 @@ export default function Home() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
             </svg>
-            10 tokens offerts a l&apos;inscription
+            10 free tokens on signup
           </div>
 
           <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
-            Pret a entrer dans l&apos;<span className="shimmer-text">arene</span> ?
+            Ready to enter the <span className="shimmer-text">arena</span>?
           </h2>
 
           <p className="text-lg text-muted mb-10 max-w-2xl mx-auto">
-            Rejoins des milliers de joueurs et commence a transformer ton talent en gains reels des maintenant.
+            Join thousands of players and start turning your talent into real earnings now.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/register" className="btn-primary px-10 py-5 rounded-xl text-lg font-bold inline-flex items-center justify-center gap-2">
-              Creer mon compte gratuitement
+              Create my free account
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -487,7 +487,7 @@ export default function Home() {
           </div>
 
           <p className="text-subtle text-sm mt-6">
-            Gratuit • Sans engagement • Retrait instantane
+            Free • No commitment • Instant withdrawal
           </p>
         </div>
       </section>

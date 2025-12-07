@@ -11,11 +11,11 @@ export default function Header() {
   const pathname = usePathname();
 
   const navLinks = [
-    { href: '/', label: 'Accueil' },
-    { href: '/games', label: 'Jouer' },
+    { href: '/', label: 'Home' },
+    { href: '/games', label: 'Play' },
     { href: '/shop', label: 'Shop' },
-    { href: '/leaderboard', label: 'Classement' },
-    { href: '/withdraw', label: 'Retirer' },
+    { href: '/leaderboard', label: 'Leaderboard' },
+    { href: '/withdraw', label: 'Withdraw' },
   ];
 
   return (
@@ -73,13 +73,13 @@ export default function Header() {
                   href="/login"
                   className="hidden sm:flex items-center gap-2 text-muted hover:text-white transition-colors text-sm font-medium"
                 >
-                  Connexion
+                  Login
                 </Link>
                 <Link
                   href="/register"
                   className="btn-primary px-5 py-2.5 rounded-xl text-sm font-semibold"
                 >
-                  S&apos;inscrire
+                  Sign Up
                 </Link>
               </>
             )}
@@ -120,7 +120,7 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                   className="nav-link mt-2 pt-2 border-t border-[rgba(139,92,246,0.1)]"
                 >
-                  Connexion
+                  Login
                 </Link>
               )}
             </nav>

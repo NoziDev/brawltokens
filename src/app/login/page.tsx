@@ -15,7 +15,7 @@ export default function Login() {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      alert('Connexion reussie! (Demo)');
+      alert('Login successful!');
     }, 1500);
   };
 
@@ -39,18 +39,18 @@ export default function Login() {
 
         {/* Login Card */}
         <div className="bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-white text-center mb-2">Bon retour!</h1>
-          <p className="text-gray-400 text-center mb-8">Connectez-vous pour continuer</p>
+          <h1 className="text-2xl font-bold text-white text-center mb-2">Welcome back!</h1>
+          <p className="text-gray-400 text-center mb-8">Sign in to continue</p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}
             <div>
-              <label className="text-gray-400 text-sm mb-2 block">Adresse email</label>
+              <label className="text-gray-400 text-sm mb-2 block">Email address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="exemple@email.com"
+                placeholder="example@email.com"
                 required
                 className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#f6a21a] transition-colors"
               />
@@ -58,7 +58,7 @@ export default function Login() {
 
             {/* Password */}
             <div>
-              <label className="text-gray-400 text-sm mb-2 block">Mot de passe</label>
+              <label className="text-gray-400 text-sm mb-2 block">Password</label>
               <input
                 type="password"
                 value={password}
@@ -72,7 +72,7 @@ export default function Login() {
             {/* Forgot Password */}
             <div className="flex justify-end">
               <Link href="/forgot-password" className="text-[#f6a21a] text-sm hover:underline">
-                Mot de passe oublie ?
+                Forgot password?
               </Link>
             </div>
 
@@ -88,10 +88,10 @@ export default function Login() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Connexion...
+                  Signing in...
                 </span>
               ) : (
-                'Se connecter'
+                'Sign In'
               )}
             </button>
           </form>
@@ -102,7 +102,7 @@ export default function Login() {
               <div className="w-full border-t border-[#2a2a3e]"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-[#12121a] text-gray-400">ou continuer avec</span>
+              <span className="px-4 bg-[#12121a] text-gray-400">or continue with</span>
             </div>
           </div>
 
@@ -128,9 +128,9 @@ export default function Login() {
 
         {/* Register Link */}
         <p className="text-center text-gray-400 mt-6">
-          Pas encore de compte ?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="text-[#f6a21a] font-semibold hover:underline">
-            S&apos;inscrire gratuitement
+            Sign up for free
           </Link>
         </p>
       </div>

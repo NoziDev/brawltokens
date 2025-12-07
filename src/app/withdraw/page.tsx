@@ -3,61 +3,32 @@
 import { useState } from 'react';
 
 export default function Withdraw() {
-  const [selectedMethod, setSelectedMethod] = useState<'paypal' | 'crypto'>('paypal');
   const [amount, setAmount] = useState<string>('');
   const [address, setAddress] = useState<string>('');
 
-  const userBalance = 1500; // Simulated balance
+  const userBalance = 0;
   const minWithdraw = 500;
-  const conversionRate = 1; // 1 token = 1 EUR
-
-  const withdrawMethods = [
-    {
-      id: 'paypal' as const,
-      name: 'PayPal',
-      icon: 'PP',
-      color: 'bg-[#003087]',
-      fee: '2%',
-      minAmount: 500,
-      processTime: '24-48h'
-    },
-    {
-      id: 'crypto' as const,
-      name: 'Bitcoin',
-      icon: 'BTC',
-      color: 'bg-[#f7931a]',
-      fee: '1%',
-      minAmount: 1000,
-      processTime: '1-2h'
-    }
-  ];
-
-  const transactions = [
-    { id: 1, date: '2024-01-15', method: 'PayPal', amount: 1000, status: 'completed', eurAmount: 980 },
-    { id: 2, date: '2024-01-10', method: 'Bitcoin', amount: 2500, status: 'completed', eurAmount: 2475 },
-    { id: 3, date: '2024-01-05', method: 'PayPal', amount: 500, status: 'completed', eurAmount: 490 },
-  ];
+  const conversionRate = 1; // 1 token = 1 USD
 
   const handleWithdraw = () => {
     const numAmount = parseInt(amount);
     if (isNaN(numAmount) || numAmount < minWithdraw) {
-      alert(`Montant minimum: ${minWithdraw} tokens`);
+      alert(`Minimum withdrawal: ${minWithdraw} tokens`);
       return;
     }
     if (numAmount > userBalance) {
-      alert('Solde insuffisant');
+      alert('Insufficient balance');
       return;
     }
     if (!address) {
-      alert('Veuillez entrer votre adresse de paiement');
+      alert('Please enter your wallet address');
       return;
     }
-    alert('Demande de retrait envoyee! (Demo)');
+    alert('Withdrawal request sent!');
   };
 
-  const calculateEur = (tokens: number) => {
-    const method = withdrawMethods.find(m => m.id === selectedMethod);
-    const fee = method ? parseFloat(method.fee) / 100 : 0;
+  const calculateUsd = (tokens: number) => {
+    const fee = 0.01; // 1% fee
     return ((tokens * conversionRate) * (1 - fee)).toFixed(2);
   };
 
@@ -71,9 +42,9 @@ export default function Withdraw() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Retirer vos gains</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">Withdraw your earnings</h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Convertissez vos tokens en argent reel
+            Convert your tokens to real money
           </p>
         </div>
       </section>
@@ -86,9 +57,9 @@ export default function Withdraw() {
             <div className="bg-gradient-to-r from-[#f6a21a] to-[#ffd700] rounded-2xl p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-black/70 font-medium">Solde disponible</p>
+                  <p className="text-black/70 font-medium">Available balance</p>
                   <p className="text-4xl font-bold text-black">{userBalance.toLocaleString()} <span className="text-2xl">tokens</span></p>
-                  <p className="text-black/70 mt-1">= {(userBalance * conversionRate).toFixed(2)} EUR</p>
+                  <p className="text-black/70 mt-1">= ${(userBalance * conversionRate).toFixed(2)} USD</p>
                 </div>
                 <div className="w-16 h-16 bg-black/20 rounded-full flex items-center justify-center">
                   <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
@@ -98,37 +69,27 @@ export default function Withdraw() {
               </div>
             </div>
 
-            {/* Withdraw Method Selection */}
+            {/* Withdraw Method - Crypto Only */}
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-6">
-              <h2 className="text-xl font-bold text-white mb-6">Methode de retrait</h2>
+              <h2 className="text-xl font-bold text-white mb-6">Withdrawal Method</h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                {withdrawMethods.map((method) => (
-                  <button
-                    key={method.id}
-                    onClick={() => setSelectedMethod(method.id)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
-                      selectedMethod === method.id
-                        ? 'border-[#f6a21a] bg-[#f6a21a]/10'
-                        : 'border-[#2a2a3e] hover:border-[#f6a21a]/50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 ${method.color} rounded-lg flex items-center justify-center`}>
-                        <span className="text-white font-bold">{method.icon}</span>
-                      </div>
-                      <div className="text-left">
-                        <div className="text-white font-semibold">{method.name}</div>
-                        <div className="text-gray-400 text-sm">Frais: {method.fee} | Min: {method.minAmount} tokens</div>
-                      </div>
+              <div className="mb-8">
+                <div className="p-4 rounded-xl border-2 border-[#f6a21a] bg-[#f6a21a]/10">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[#f7931a] rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold">ETH</span>
                     </div>
-                  </button>
-                ))}
+                    <div className="text-left">
+                      <div className="text-white font-semibold">Ethereum (ETH)</div>
+                      <div className="text-gray-400 text-sm">Fee: 1% | Min: 500 tokens</div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Amount Input */}
               <div className="mb-6">
-                <label className="text-gray-400 text-sm mb-2 block">Montant a retirer (tokens)</label>
+                <label className="text-gray-400 text-sm mb-2 block">Amount to withdraw (tokens)</label>
                 <div className="relative">
                   <input
                     type="number"
@@ -146,7 +107,7 @@ export default function Withdraw() {
                 </div>
                 {amount && (
                   <div className="mt-2 text-gray-400">
-                    = <span className="text-green-400 font-semibold">{calculateEur(parseInt(amount) || 0)} EUR</span> apres frais
+                    = <span className="text-green-400 font-semibold">${calculateUsd(parseInt(amount) || 0)} USD</span> after fees
                   </div>
                 )}
               </div>
@@ -154,13 +115,13 @@ export default function Withdraw() {
               {/* Address Input */}
               <div className="mb-6">
                 <label className="text-gray-400 text-sm mb-2 block">
-                  {selectedMethod === 'paypal' ? 'Adresse email PayPal' : 'Adresse Bitcoin'}
+                  Ethereum wallet address
                 </label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder={selectedMethod === 'paypal' ? 'exemple@email.com' : 'bc1q...'}
+                  placeholder="0x..."
                   className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#f6a21a]"
                 />
               </div>
@@ -168,9 +129,14 @@ export default function Withdraw() {
               {/* Withdraw Button */}
               <button
                 onClick={handleWithdraw}
-                className="w-full btn-primary py-4 rounded-xl text-black font-bold text-lg"
+                disabled={userBalance < minWithdraw}
+                className={`w-full py-4 rounded-xl font-bold text-lg ${
+                  userBalance >= minWithdraw
+                    ? 'btn-primary text-black'
+                    : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                }`}
               >
-                Demander le retrait
+                {userBalance >= minWithdraw ? 'Request Withdrawal' : 'Insufficient Balance'}
               </button>
             </div>
           </div>
@@ -179,58 +145,39 @@ export default function Withdraw() {
           <div className="space-y-8">
             {/* Info Card */}
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-6">
-              <h2 className="text-xl font-bold text-white mb-4">Informations</h2>
+              <h2 className="text-xl font-bold text-white mb-4">Information</h2>
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Minimum de retrait: 500 tokens
+                  Minimum withdrawal: 500 tokens
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Taux: 1 token = 1 EUR
+                  Rate: 1 token = $1 USD
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  PayPal: 24-48h de traitement
+                  Processing time: 1-24h
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Crypto: 1-2h de traitement
+                  ETH withdrawal only
                 </li>
               </ul>
             </div>
 
             {/* Transaction History */}
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-6">
-              <h2 className="text-xl font-bold text-white mb-4">Historique</h2>
-
-              <div className="space-y-4">
-                {transactions.map((tx) => (
-                  <div key={tx.id} className="bg-[#0a0a0f] rounded-xl p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <span className="text-white font-medium">{tx.method}</span>
-                        <div className="text-gray-500 text-xs">{tx.date}</div>
-                      </div>
-                      <span className="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full">
-                        {tx.status}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">{tx.amount} tokens</span>
-                      <span className="text-green-400 font-semibold">{tx.eurAmount} EUR</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-xl font-bold text-white mb-4">History</h2>
+              <p className="text-gray-400 text-center py-8">No withdrawals yet</p>
             </div>
           </div>
         </div>

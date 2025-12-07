@@ -14,7 +14,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-white">BrawlTokens</span>
             </Link>
             <p className="text-gray-400 max-w-md">
-              La plateforme de gaming competitive. Gagnez des tokens en jouant et convertissez-les en argent reel.
+              The competitive gaming platform. Earn tokens by playing and convert them into real money.
             </p>
             <div className="flex gap-4 mt-6">
               <a href="#" className="w-10 h-10 bg-[#1a1a2e] rounded-full flex items-center justify-center text-gray-400 hover:text-[#f6a21a] hover:bg-[#2a2a3e] transition-colors">
@@ -37,12 +37,12 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Liens Rapides</h3>
+            <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link href="/games" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Jouer</Link></li>
-              <li><Link href="/shop" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Acheter Tokens</Link></li>
-              <li><Link href="/withdraw" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Retirer</Link></li>
-              <li><Link href="/leaderboard" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Classement</Link></li>
+              <li><Link href="/games" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Play</Link></li>
+              <li><Link href="/shop" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Buy Tokens</Link></li>
+              <li><Link href="/withdraw" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Withdraw</Link></li>
+              <li><Link href="/leaderboard" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Leaderboard</Link></li>
             </ul>
           </div>
 
@@ -50,16 +50,16 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
-              <li><Link href="/terms" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Conditions d&apos;utilisation</Link></li>
-              <li><Link href="/privacy" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Politique de confidentialite</Link></li>
-              <li><Link href="/refund" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Politique de remboursement</Link></li>
+              <li><Link href="/terms" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/refund" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Refund Policy</Link></li>
               <li><Link href="/contact" className="text-gray-400 hover:text-[#f6a21a] transition-colors">Contact</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-[#2a2a3e] mt-12 pt-8 text-center text-gray-500">
-          <p>&copy; {new Date().getFullYear()} BrawlTokens. Tous droits reserves.</p>
+          <p>&copy; {new Date().getFullYear()} BrawlTokens. All rights reserved.</p>
         </div>
       </div>
     </footer>

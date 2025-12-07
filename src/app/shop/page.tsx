@@ -52,8 +52,7 @@ export default function Shop() {
 
   const handlePurchase = (packId: number) => {
     setSelectedPack(packId);
-    // TODO: Integrate payment gateway
-    alert('Integration paiement a venir!');
+    alert('Payment integration coming soon!');
   };
 
   return (
@@ -68,13 +67,13 @@ export default function Shop() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 bg-gradient-to-br from-[#f6a21a] to-[#ffd700] rounded-full pulse-gold"></div>
-            <span className="text-2xl font-bold gradient-text">Boutique de Tokens</span>
+            <span className="text-2xl font-bold gradient-text">Token Shop</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Achetez des Tokens
+            Buy Tokens
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Choisissez votre pack de tokens et commencez a jouer. Plus vous achetez, plus vous recevez de bonus!
+            Choose your token pack and start playing. The more you buy, the more bonus you get!
           </p>
         </div>
       </section>
@@ -92,7 +91,7 @@ export default function Shop() {
               >
                 {pack.popular && (
                   <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#f6a21a] to-[#ffd700] text-black text-center py-2 font-semibold text-sm">
-                    PLUS POPULAIRE
+                    MOST POPULAR
                   </div>
                 )}
 
@@ -114,19 +113,19 @@ export default function Shop() {
                   {pack.bonus > 0 && (
                     <div className="text-center mb-6">
                       <span className="inline-block bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold">
-                        +{pack.bonus} tokens bonus
+                        +{pack.bonus} bonus tokens
                       </span>
                     </div>
                   )}
 
                   {/* Price */}
                   <div className="text-center mb-6">
-                    <span className="text-4xl font-bold gradient-text">{pack.price}EUR</span>
+                    <span className="text-4xl font-bold gradient-text">${pack.price}</span>
                   </div>
 
                   {/* Value indicator */}
                   <div className="text-center text-gray-400 text-sm mb-6">
-                    {((pack.tokens + pack.bonus) / pack.price).toFixed(1)} tokens/EUR
+                    {((pack.tokens + pack.bonus) / pack.price).toFixed(1)} tokens/$
                   </div>
 
                   {/* Purchase Button */}
@@ -138,7 +137,7 @@ export default function Shop() {
                         : 'bg-[#1a1a2e] text-white hover:bg-[#2a2a3e] border border-[#2a2a3e]'
                     }`}
                   >
-                    Acheter maintenant
+                    Buy now
                   </button>
                 </div>
               </div>
@@ -147,39 +146,21 @@ export default function Shop() {
         </div>
       </section>
 
-      {/* Payment Methods */}
+      {/* Payment Methods - Crypto Only */}
       <section className="py-16 bg-[#12121a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">Moyens de paiement acceptes</h2>
-            <p className="text-gray-400">Paiement securise et instantane</p>
+            <h2 className="text-2xl font-bold text-white mb-4">Accepted payment method</h2>
+            <p className="text-gray-400">Secure and instant payment</p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8">
-            {/* PayPal */}
-            <div className="bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl p-6 flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#003087] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">PP</span>
-              </div>
-              <span className="text-white font-medium">PayPal</span>
-            </div>
-
-            {/* Credit Card */}
-            <div className="bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl p-6 flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-[#1a1f71] to-[#f79e1b] rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                </svg>
-              </div>
-              <span className="text-white font-medium">Carte bancaire</span>
-            </div>
-
+          <div className="flex justify-center">
             {/* Crypto */}
             <div className="bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl p-6 flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#f7931a] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">BTC</span>
+              <div className="w-12 h-12 bg-[#627eea] rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">ETH</span>
               </div>
-              <span className="text-white font-medium">Crypto</span>
+              <span className="text-white font-medium">Ethereum (ETH)</span>
             </div>
           </div>
         </div>
@@ -188,22 +169,22 @@ export default function Shop() {
       {/* FAQ */}
       <section className="py-16 bg-[#0a0a0f]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-white text-center mb-12">Questions frequentes</h2>
+          <h2 className="text-2xl font-bold text-white text-center mb-12">Frequently Asked Questions</h2>
 
           <div className="space-y-4">
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl p-6">
-              <h3 className="text-white font-semibold mb-2">Combien valent les tokens ?</h3>
-              <p className="text-gray-400">1 token = 1 EUR. Le taux est fixe.</p>
+              <h3 className="text-white font-semibold mb-2">How much are tokens worth?</h3>
+              <p className="text-gray-400">1 token = $1 USD. The rate is fixed.</p>
             </div>
 
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl p-6">
-              <h3 className="text-white font-semibold mb-2">Comment recevoir mes tokens ?</h3>
-              <p className="text-gray-400">Les tokens sont credites instantanement sur votre compte apres validation du paiement.</p>
+              <h3 className="text-white font-semibold mb-2">How do I receive my tokens?</h3>
+              <p className="text-gray-400">Tokens are credited instantly to your account after payment confirmation.</p>
             </div>
 
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl p-6">
-              <h3 className="text-white font-semibold mb-2">Puis-je obtenir un remboursement ?</h3>
-              <p className="text-gray-400">Les tokens achetes ne sont pas remboursables mais peuvent etre retires en argent reel.</p>
+              <h3 className="text-white font-semibold mb-2">Can I get a refund?</h3>
+              <p className="text-gray-400">Purchased tokens are non-refundable but can be withdrawn as real money.</p>
             </div>
           </div>
         </div>

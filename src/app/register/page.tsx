@@ -15,12 +15,12 @@ export default function Register() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert('Les mots de passe ne correspondent pas');
+      alert('Passwords do not match');
       return;
     }
 
     if (!acceptTerms) {
-      alert('Veuillez accepter les conditions d\'utilisation');
+      alert('Please accept the terms of service');
       return;
     }
 
@@ -29,7 +29,7 @@ export default function Register() {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      alert('Inscription reussie! (Demo)');
+      alert('Registration successful!');
     }, 1500);
   };
 
@@ -53,13 +53,13 @@ export default function Register() {
 
         {/* Register Card */}
         <div className="bg-[#12121a] border border-[#2a2a3e] rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-white text-center mb-2">Creer un compte</h1>
-          <p className="text-gray-400 text-center mb-8">Rejoignez la communaute et commencez a gagner</p>
+          <h1 className="text-2xl font-bold text-white text-center mb-2">Create an account</h1>
+          <p className="text-gray-400 text-center mb-8">Join the community and start earning</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Username */}
             <div>
-              <label className="text-gray-400 text-sm mb-2 block">Nom d&apos;utilisateur</label>
+              <label className="text-gray-400 text-sm mb-2 block">Username</label>
               <input
                 type="text"
                 value={username}
@@ -74,12 +74,12 @@ export default function Register() {
 
             {/* Email */}
             <div>
-              <label className="text-gray-400 text-sm mb-2 block">Adresse email</label>
+              <label className="text-gray-400 text-sm mb-2 block">Email address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="exemple@email.com"
+                placeholder="example@email.com"
                 required
                 className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#f6a21a] transition-colors"
               />
@@ -87,12 +87,12 @@ export default function Register() {
 
             {/* Password */}
             <div>
-              <label className="text-gray-400 text-sm mb-2 block">Mot de passe</label>
+              <label className="text-gray-400 text-sm mb-2 block">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min. 8 caracteres"
+                placeholder="Min. 8 characters"
                 required
                 minLength={8}
                 className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#f6a21a] transition-colors"
@@ -101,12 +101,12 @@ export default function Register() {
 
             {/* Confirm Password */}
             <div>
-              <label className="text-gray-400 text-sm mb-2 block">Confirmer le mot de passe</label>
+              <label className="text-gray-400 text-sm mb-2 block">Confirm password</label>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Repeter le mot de passe"
+                placeholder="Repeat password"
                 required
                 className="w-full bg-[#0a0a0f] border border-[#2a2a3e] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#f6a21a] transition-colors"
               />
@@ -122,10 +122,10 @@ export default function Register() {
                 className="mt-1 w-4 h-4 rounded border-[#2a2a3e] bg-[#0a0a0f] text-[#f6a21a] focus:ring-[#f6a21a]"
               />
               <label htmlFor="terms" className="text-gray-400 text-sm">
-                J&apos;accepte les{' '}
-                <Link href="/terms" className="text-[#f6a21a] hover:underline">conditions d&apos;utilisation</Link>
-                {' '}et la{' '}
-                <Link href="/privacy" className="text-[#f6a21a] hover:underline">politique de confidentialite</Link>
+                I accept the{' '}
+                <Link href="/terms" className="text-[#f6a21a] hover:underline">terms of service</Link>
+                {' '}and the{' '}
+                <Link href="/privacy" className="text-[#f6a21a] hover:underline">privacy policy</Link>
               </label>
             </div>
 
@@ -141,10 +141,10 @@ export default function Register() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Creation en cours...
+                  Creating account...
                 </span>
               ) : (
-                'Creer mon compte'
+                'Create my account'
               )}
             </button>
           </form>
@@ -155,7 +155,7 @@ export default function Register() {
               <div className="w-full border-t border-[#2a2a3e]"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-[#12121a] text-gray-400">ou s&apos;inscrire avec</span>
+              <span className="px-4 bg-[#12121a] text-gray-400">or sign up with</span>
             </div>
           </div>
 
@@ -180,15 +180,15 @@ export default function Register() {
 
           {/* Bonus Info */}
           <div className="mt-6 bg-[#f6a21a]/10 border border-[#f6a21a]/30 rounded-xl p-4 text-center">
-            <span className="text-[#f6a21a] font-semibold">Bonus d&apos;inscription: 50 tokens gratuits!</span>
+            <span className="text-[#f6a21a] font-semibold">Sign-up bonus: 50 free tokens!</span>
           </div>
         </div>
 
         {/* Login Link */}
         <p className="text-center text-gray-400 mt-6">
-          Deja un compte ?{' '}
+          Already have an account?{' '}
           <Link href="/login" className="text-[#f6a21a] font-semibold hover:underline">
-            Se connecter
+            Sign in
           </Link>
         </p>
       </div>
