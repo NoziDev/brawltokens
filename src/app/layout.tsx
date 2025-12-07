@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BrawlTokens - Jouez et Gagnez des Tokens",
-  description: "La plateforme de gaming competitive. Gagnez des tokens en jouant a Brawlhalla et convertissez-les en argent reel.",
-  keywords: ["brawlhalla", "gaming", "tokens", "esports", "argent", "competition"],
+  title: "BrawlTokens - Play and Earn Tokens",
+  description: "The competitive gaming platform. Earn tokens by playing Brawlhalla and convert them to real money.",
+  keywords: ["brawlhalla", "gaming", "tokens", "esports", "money", "competition"],
 };
 
 export default function RootLayout({
@@ -26,15 +27,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Header />
-        <main className="flex-1 pt-16">
-          {children}
-        </main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main className="flex-1 pt-16">
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

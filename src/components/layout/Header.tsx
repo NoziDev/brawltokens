@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn] = useState(false);
-  const [tokenBalance] = useState(0);
   const pathname = usePathname();
+  const { user, profile, signOut, loading } = useAuth();
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -46,26 +46,38 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            {profile?.is_admin && (
+              <Link
+                href="/admin"
+                className={`nav-link text-[#f6a21a] ${pathname === '/admin' ? 'active' : ''}`}
+              >
+                Admin
+              </Link>
+            )}
           </nav>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            {isLoggedIn ? (
+            {loading ? (
+              <div className="w-8 h-8 rounded-full bg-[#1a1a2e] animate-pulse"></div>
+            ) : user && profile ? (
               <>
                 {/* Token Balance */}
                 <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-[#13131a] border border-[rgba(139,92,246,0.2)]">
                   <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#f6a21a] to-[#ffd700]"></div>
-                  <span className="text-[#fbbf24] font-semibold">{tokenBalance.toLocaleString()}</span>
+                  <span className="text-[#fbbf24] font-semibold">{profile.tokens.toLocaleString()}</span>
                 </div>
 
-                {/* Profile */}
-                <Link href="/profile" className="avatar w-10 h-10 bg-[#13131a] overflow-hidden">
-                  <div className="w-full h-full bg-gradient-to-br from-[#8b5cf6]/30 to-[#06b6d4]/30 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-[#8b5cf6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
-                </Link>
+                {/* Username & Logout */}
+                <div className="flex items-center gap-2">
+                  <span className="hidden sm:block text-white font-medium">{profile.username}</span>
+                  <button
+                    onClick={() => signOut()}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Logout
+                  </button>
+                </div>
               </>
             ) : (
               <>
@@ -114,7 +126,16 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
-              {!isLoggedIn && (
+              {profile?.is_admin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="nav-link text-[#f6a21a]"
+                >
+                  Admin
+                </Link>
+              )}
+              {!user && (
                 <Link
                   href="/login"
                   onClick={() => setIsMenuOpen(false)}

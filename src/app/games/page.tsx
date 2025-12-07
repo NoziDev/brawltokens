@@ -51,7 +51,7 @@ export default function Games() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 bg-[#12121a] px-4 py-2 rounded-full border border-[#2a2a3e]">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span className="text-green-400 font-medium">2,450 online</span>
+                <span className="text-green-400 font-medium">Online</span>
               </div>
               <Link href="/shop" className="btn-primary px-6 py-2 rounded-full text-black font-semibold">
                 Buy Tokens
