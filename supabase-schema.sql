@@ -17,14 +17,19 @@ CREATE TABLE IF NOT EXISTS public.users (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Matches table
+-- Matches table with game options
 CREATE TABLE IF NOT EXISTS public.matches (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   player1_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
   player2_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
   stake INTEGER NOT NULL,
+  format TEXT DEFAULT 'bo3' CHECK (format IN ('bo1', 'bo3', 'bo5')),
+  gadgets BOOLEAN DEFAULT false,
+  map_type TEXT DEFAULT 'ranked' CHECK (map_type IN ('ranked', 'tournament')),
   status TEXT DEFAULT 'waiting' CHECK (status IN ('waiting', 'in_progress', 'completed', 'cancelled')),
   winner_id UUID REFERENCES public.users(id) ON DELETE SET NULL,
+  player1_score INTEGER DEFAULT 0,
+  player2_score INTEGER DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -52,7 +57,7 @@ CREATE POLICY "Users can update own profile" ON public.users
   FOR UPDATE USING (auth.uid() = id);
 
 CREATE POLICY "Enable insert for authenticated users" ON public.users
-  FOR INSERT WITH CHECK (auth.uid() = id);
+  FOR INSERT WITH CHECK (true);
 
 -- Policies for matches table
 CREATE POLICY "Anyone can view matches" ON public.matches
@@ -63,6 +68,9 @@ CREATE POLICY "Authenticated users can create matches" ON public.matches
 
 CREATE POLICY "Players can update their matches" ON public.matches
   FOR UPDATE USING (auth.uid() = player1_id OR auth.uid() = player2_id);
+
+CREATE POLICY "Allow delete own waiting matches" ON public.matches
+  FOR DELETE USING (auth.uid() = player1_id AND status = 'waiting');
 
 -- Policies for transactions table
 CREATE POLICY "Users can view own transactions" ON public.transactions
